@@ -46,4 +46,7 @@ class FileManager:
 
     @staticmethod
     def create_corpus(*args: str) -> list[str]:
-        return [doc for doc in args]
+        corpus = []
+        for doc in args:
+            corpus.append(FileManager.read_file(doc))
+        return corpus
