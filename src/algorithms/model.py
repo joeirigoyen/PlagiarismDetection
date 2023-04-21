@@ -24,13 +24,6 @@ class BaseModel(ABC):
 
 
 class BaseMediator(ABC):
-    instance = None
-
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(BaseMediator, cls).__new__(cls)
-        return cls.instance
-    
     @abstractmethod
     def add_child(self, model: BaseModel) -> None:
         ...
