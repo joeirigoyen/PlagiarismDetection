@@ -2,8 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class BaseModel(ABC):
-    def __init__(self):
+    def __init__(self, name: str):
         self.__mediator = None
+        self.name = name
 
     @property
     def mediator(self):
@@ -29,16 +30,16 @@ class BaseMediator(ABC):
         ...
     
     @abstractmethod
-    def add_child(self, model: BaseModel) -> None:
+    def add_children(self, models: tuple[BaseModel]) -> None:
         ...
 
 class ModelMediator(BaseMediator):
 
     white_list = ["model_a", "model_b", "model_c"]
 
-    def __init__(self, *args):
+    def __init__(self, *args: BaseModel):
         self.ai_models = []
-        self.add_child(args)
+        self.add_children(args)
 
     def add_child(self, model: BaseModel) -> None:
         if model.name in self.white_list:
@@ -47,8 +48,8 @@ class ModelMediator(BaseMediator):
         else:
             raise ValueError("Invalid model name.")
     
-    def add_child(self, model: BaseModel) -> None:
-        for m in model:
+    def add_children(self, models: tuple[BaseModel]) -> None:
+        for m in models:
             self.add_child(m)
 
 
