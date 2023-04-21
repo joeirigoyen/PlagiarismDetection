@@ -1,6 +1,7 @@
 # IDE and venv files
 .idea/
 venv/
+*.DS_Store/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
