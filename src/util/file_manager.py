@@ -1,7 +1,7 @@
 """
 Contains different modules to manage files and directories under different operating systems.
 
-Author: Youthan Irigoyen
+Authors: Youthan Irigoyen, Eduardo Rodríguez
 Creation date: 04-20-2023
 """
 from pathlib import Path
@@ -43,3 +43,7 @@ class FileManager:
         with open(file_path, 'r') as file:
             file_contents = file.read()
         return file_contents
+
+    @staticmethod
+    def create_corpus(*args: str) -> list[str]:
+        return [doc for doc in args]
