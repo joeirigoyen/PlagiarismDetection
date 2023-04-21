@@ -39,13 +39,13 @@ class TestGenerator(unittest.TestCase):
 
     def test_generate_random_texts_invalid_parent_directory(self):
         # Arrange
-        invalid_dir = "/invalid/directory"
+        invalid_dir = "invalid/directory.txt"
         number_of_files = 5
         prefix = "test_file"
 
         # Act
-        with self.assertRaises(FileNotFoundError):
-            self.generator.generate_random_texts(invalid_dir, number_of_files, prefix)
+        self.assertRaises(ValueError, self.generator.generate_random_texts, invalid_dir, 5)
 
         # Assert
         self.assertFalse(os.path.exists(invalid_dir))
+

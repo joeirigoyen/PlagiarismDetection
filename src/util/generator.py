@@ -38,6 +38,8 @@ class Generator:
         """
         # Validate parent directory
         parent_directory = Path(parent_directory)
+        if not parent_directory.is_dir():
+            raise ValueError('Path is not a directory')
         fm.validate_file(parent_directory)
         # Generate random files in parent directory
         for i in range(number_of_files):
