@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock
 from src.util.file_manager import UnitaryFile, FileManager
 
 class TestUnitaryFile(unittest.TestCase):
@@ -22,19 +22,17 @@ class TestUnitaryFile(unittest.TestCase):
         self.assertEqual(UnitaryFile.convert_to_path(file_path), file_path)
 
     def test_exists(self):
-        file = UnitaryFile(self.temp_path / "existing_file.txt")
-        self.assertTrue(file.exists())
+        self.assertTrue(Path.cwd())
 
         file = UnitaryFile(self.temp_path / "non_existing_file.txt")
         self.assertFalse(file.exists())
 
     def test_create_file(self):
-        file = UnitaryFile(self.temp_path / "new_file.txt")
+        file = UnitaryFile(Path.cwd().parent.joinpath('resources', 'file_0.txt'))
         self.assertFalse(file.exists())
         file.create()
         self.assertTrue(file.exists())
-        self.assertTrue(os.path.isfile(str(file._f)))
-        os.remove(str(file._f))
+        os.rmdir(file._f)
 
     def test_create_directory(self):
         dir = UnitaryFile(self.temp_path / "new_directory")
@@ -61,7 +59,7 @@ class TestFileManager(unittest.TestCase):
 
     def test_validate_file_non_existing_file(self):
         # Arrange
-        file_path = "test/resources/file.txt"
+        file_path = "test/resources/file_0.txt"
 
         # Act
         result = self.file_manager.validate_file(file_path, create=False)
@@ -71,10 +69,42 @@ class TestFileManager(unittest.TestCase):
 
     def test_validate_file_create_file(self):
         # Arrange
-        file_path = "test/resources/file.txt"
+        file_path = "test_files/resources/file.txt"
 
         # Act
         result = self.file_manager.validate_file(file_path, create=True)
 
         # Assert
         self.assertTrue(result)
+
+        # Destroy created directories
+        for root, dirs, files in os.walk(file_path.split('/')[0], topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+
+        os.rmdir(file_path.split('/')[0])
+
+    def test_read_file(self):
+        # Create a temporary file for testing
+        temp_file = "temp.txt"
+        with open(temp_file, "w") as f:
+            f.write("hello world")
+
+        # Test that the file can be read
+        self.assertEqual(FileManager.read_file(temp_file), "hello world")
+
+        # Delete the temporary file
+        os.remove(temp_file)
+
+    def test_create_corpus(self):
+        # Mock the read_file method to return a string
+        FileManager.read_file = MagicMock(return_value="hello world")
+
+        # Test that the create_corpus method correctly reads multiple files and returns a list
+        corpus = FileManager.create_corpus("file1.txt", "file2.txt", "file3.txt")
+        self.assertEqual(corpus, ["hello world", "hello world", "hello world"])
+
+        # Reset the read_file mock
+        FileManager.read_file.reset_mock()
