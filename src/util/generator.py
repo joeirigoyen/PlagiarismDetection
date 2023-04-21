@@ -4,11 +4,11 @@ This module contains a set of classes that generate different useful data types 
 Author: Youthan Irigoyen
 Creation date: 04-20-2023
 """
-import random
+import secrets
 import string
 
 from pathlib import Path
-from file_manager import FileManager as fm
+from src.util.file_manager import FileManager as fm
 
 
 class Generator:
@@ -25,9 +25,9 @@ class Generator:
         """
         # Set random length if a maximum length wasn't given.
         if max_len == -1:
-            max_len = random.randint(1, 1000)
+            max_len = secrets.randbelow(1000) + 100
         # Generate random string
-        return ''.join(random.choice(string.ascii_letters) for _ in range(max_len))
+        return ''.join(secrets.choice(string.ascii_letters) for _ in range(max_len))
 
     def generate_random_texts(self, parent_directory: str, number_of_files: int, prefix: str = "test_file") -> None:
         """

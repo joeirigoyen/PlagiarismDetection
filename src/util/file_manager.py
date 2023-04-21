@@ -14,7 +14,7 @@ class UnitaryFile:
 
     @staticmethod
     def convert_to_path(file_path: str | Path) -> Path:
-        return Path(file_path) if type(file_path) is str else file_path
+        return Path(file_path) if isinstance(file_path, str) else file_path
 
     def exists(self) -> bool:
         return self._file.exists()
