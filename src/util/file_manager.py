@@ -47,13 +47,13 @@ class FileManager:
         return True
 
     @staticmethod
-    def read_file(file_path: Any) -> str:
+    def read_file(file_path: Path) -> str:
         with open(file_path, 'r') as file:
             file_contents = file.read()
         return file_contents
 
     @staticmethod
-    def create_corpus(*args: str) -> list[str]:
+    def create_corpus(*args: Path) -> list[str]:
         corpus = []
         for doc in args:
             corpus.append(FileManager.read_file(doc))
