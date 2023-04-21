@@ -37,3 +37,9 @@ class FileManager:
             else:
                 return False
         return True
+
+    @staticmethod
+    def read_file(file_path: Any) -> str:
+        with open(file_path, 'r') as file:
+            file_contents = file.read()
+        return file_contents
