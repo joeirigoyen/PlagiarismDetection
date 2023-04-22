@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 from src.util.file_manager import UnitaryFile, FileManager
 
+
 class TestUnitaryFile(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -88,7 +89,7 @@ class TestFileManager(unittest.TestCase):
 
     def test_read_file(self):
         # Create a temporary file for testing
-        temp_file = "temp.txt"
+        temp_file = Path("temp.txt")
         with open(temp_file, "w") as f:
             f.write("hello world")
 
@@ -103,7 +104,7 @@ class TestFileManager(unittest.TestCase):
         FileManager.read_file = MagicMock(return_value="hello world")
 
         # Test that the create_corpus method correctly reads multiple files and returns a list
-        corpus = FileManager.create_corpus("file1.txt", "file2.txt", "file3.txt")
+        corpus = FileManager.create_corpus(Path("file1.txt"), Path("file2.txt"), Path("file3.txt"))
         self.assertEqual(corpus, ["hello world", "hello world", "hello world"])
 
         # Reset the read_file mock

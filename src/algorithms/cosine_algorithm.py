@@ -12,7 +12,7 @@ from typing import Any
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from src.algorithms.model import BaseModel
-from src.util.file_manager import FileManager as fm
+from src.util.file_manager import FileManager as Fm
 
 
 class CosineAlgorithm(BaseModel):
@@ -43,9 +43,9 @@ class CosineAlgorithm(BaseModel):
         :param suspicious: The document to analyze.
         :return: A tuple containing the cosine similarity between the two documents and the original document's content.
         """
-        if not fm.validate_file(original, create=False) or not fm.validate_file(suspicious, create=False):
+        if not Fm.validate_file(original, create=False) or not Fm.validate_file(suspicious, create=False):
             raise ValueError("The provided path is not a file.")
-        corpus = fm.create_corpus(Path(original), Path(suspicious))
+        corpus = Fm.create_corpus(Path(original), Path(suspicious))
         trsfm = self.__vectorizer.fit_transform(corpus)
 
         res = cosine_similarity(trsfm[0:1], trsfm)[0][1] * 100
