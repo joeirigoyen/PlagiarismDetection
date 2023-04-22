@@ -48,7 +48,7 @@ class FileManager:
 
     @staticmethod
     def read_file(file_path: Path) -> str:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding="utf-8") as file:
             file_contents = file.read()
         return file_contents
 
@@ -58,3 +58,10 @@ class FileManager:
         for doc in args:
             corpus.append(FileManager.read_file(doc))
         return corpus
+
+    @staticmethod
+    def extract_file_name(file_path: Path | str, ext: bool = False) -> str:
+        file_path = Path(file_path)
+        if ext:
+            return file_path.name
+        return file_path.stem
