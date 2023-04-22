@@ -1,9 +1,18 @@
 # IDE and venv files
 .idea/
 venv/
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pytest_cache/
 
 # C extensions
 *.so

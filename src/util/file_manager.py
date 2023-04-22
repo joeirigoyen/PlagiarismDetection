@@ -10,20 +10,28 @@ from typing import Any
 
 class UnitaryFile:
     def __init__(self, file_path: str | Path):
-        self._file = self.convert_to_path(file_path)
+        self._f = self.convert_to_path(file_path)
+
+    @property
+    def f(self):
+        return self._f
+
+    @f.setter
+    def f(self, new_f: str | Path):
+        self._f = self.convert_to_path(new_f)
 
     @staticmethod
     def convert_to_path(file_path: str | Path) -> Path:
         return Path(file_path) if isinstance(file_path, str) else file_path
 
     def exists(self) -> bool:
-        return self._file.exists()
+        return self._f.exists()
 
     def create(self) -> None:
-        if self._file.is_file():
-            self._file.touch()
+        if self._f.is_file():
+            self._f.touch()
         else:
-            self._file.mkdir(parents=True, exist_ok=True)
+            self._f.mkdir(parents=True, exist_ok=True)
 
 
 class FileManager:
@@ -39,14 +47,21 @@ class FileManager:
         return True
 
     @staticmethod
-    def read_file(file_path: Any) -> str:
-        with open(file_path, 'r') as file:
+    def read_file(file_path: Path) -> str:
+        with open(file_path, 'r', encoding="utf-8") as file:
             file_contents = file.read()
         return file_contents
 
     @staticmethod
-    def create_corpus(*args: str) -> list[str]:
+    def create_corpus(*args: Path) -> list[str]:
         corpus = []
         for doc in args:
             corpus.append(FileManager.read_file(doc))
         return corpus
+
+    @staticmethod
+    def extract_file_name(file_path: Path | str, ext: bool = False) -> str:
+        file_path = Path(file_path)
+        if ext:
+            return file_path.name
+        return file_path.stem
