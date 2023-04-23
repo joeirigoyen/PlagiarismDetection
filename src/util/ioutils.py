@@ -18,10 +18,13 @@ def get_user_input(prompt: str, retry: bool = True) -> str | None:
         return input_path
 
 
-def load_from_json_file(json_path: str | Path) -> dict:
+def load_from_json_file(json_path: str | Path) -> dict | None:
+    if not json_path:
+        return None
     file_content = None
     try:
-        file_content = json.load(open(json_path, "r"))
+        with open(json_path, "r") as f:
+            file_content = json.load(f)
     except FileNotFoundError:
         print(f"File {json_path} not found.")
     except json.decoder.JSONDecodeError:
