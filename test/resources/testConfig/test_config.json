@@ -1,0 +1,6 @@
+{
+  "PROJECT_ROOT": "../../..",
+  "SRC": "../../../test",
+  "RESOURCES": "../../../test/resources",
+  "ORIGINAL_FILES": "../../../test/resources/original"
+}

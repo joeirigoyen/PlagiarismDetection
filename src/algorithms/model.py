@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Any
 
 from src.util.config import ConfigManager
-from src.util.ioutils import get_user_input, load_from_json_file
+from src.util.ioutils import load_from_json_file
 from src.util.file_manager import FileManager as Fm
 
 
@@ -53,6 +54,13 @@ class ModelMediator(BaseMediator):
         self.__ground_truth = load_from_json_file(self.__config_manager.get("GROUND_TRUTH"))
         self.__cm = ConfigManager()
         self.add_children(args)
+
+    @property
+    def total_models(self) -> int:
+        return len(self.__models)
+
+    def has_model_of_type(self, model_type: Any) -> bool:
+        return any(isinstance(m, model_type) for m in self.__models)
 
     def add_child(self, model: BaseModel) -> None:
         model.mediator = self

@@ -14,3 +14,4 @@ if __name__ == '__main__':
         mediator.run_comparison(show_ground_truth=True)
     else:
         print("No valid path provided. Exiting...")
+        exit()
