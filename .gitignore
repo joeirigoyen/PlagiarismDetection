@@ -60,4 +60,4 @@ self/
 *.pot
 
 # Sphinx documentation
-docs/_build/
+docs/_build/.DS_Store
