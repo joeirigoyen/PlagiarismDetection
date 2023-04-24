@@ -1,5 +1,7 @@
 # Initialize dictionary
 import json
+import os
+
 from pathlib import Path
 
 
@@ -9,11 +11,12 @@ class ConfigManager:
 
     def __init__(self, json_path: str | Path = None):
         # Initialize dictionary
+        self.__root = Path(__file__).parent.parent.parent.absolute() if not json_path else None
         self.__env_vars = {}
         try:
             self.__env_vars = self.__initialize_env_vars(json_path)
         except FileNotFoundError:
-            self.__env_vars = self.__initialize_env_vars(None)
+            self.__env_vars = self.__initialize_env_vars(None, self.__root)
 
     @property
     def env_vars(self) -> dict:
@@ -24,7 +27,7 @@ class ConfigManager:
             self.__from_json(json_path)
         else:
             self.__env_vars = {
-                "PROJECT_ROOT": Path.cwd().parent.parent
+                "PROJECT_ROOT": self.__root
             }
             # Add global environment variables
             self.__env_vars.update({"SRC": self.__env_vars.get("PROJECT_ROOT") / "src"})
@@ -46,6 +49,8 @@ class ConfigManager:
             # Update dictionary
             for key, value in json_data.items():
                 if key in self.whitelist:
+                    if key == "PROJECT_ROOT":
+                        self.__root = value
                     self.__update_attr(key, value)
         else:
             raise FileNotFoundError(f"File {json_path} not found.")
