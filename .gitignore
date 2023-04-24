@@ -12,6 +12,7 @@ Thumbs.db
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pytest_cache/
 
 # C extensions
 *.so
@@ -59,4 +60,4 @@ self/
 *.pot
 
 # Sphinx documentation
-docs/_build/
+docs/_build/.DS_Store

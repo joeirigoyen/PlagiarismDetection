@@ -12,7 +12,7 @@ from typing import Any
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from src.algorithms.model import BaseModel
-from src.util.file_manager import FileManager as fm
+from src.util.file_manager import FileManager as Fm
 
 
 class CosineAlgorithm(BaseModel):
@@ -43,27 +43,27 @@ class CosineAlgorithm(BaseModel):
         :param suspicious: The document to analyze.
         :return: A tuple containing the cosine similarity between the two documents and the original document's content.
         """
-        if not fm.validate_file(original, create=False) or not fm.validate_file(suspicious, create=False):
+        if not Fm.validate_file(original, create=False) or not Fm.validate_file(suspicious, create=False):
             raise ValueError("The provided path is not a file.")
-        corpus = fm.create_corpus(Path(original), Path(suspicious))
+        corpus = Fm.create_corpus(Path(original), Path(suspicious))
         trsfm = self.__vectorizer.fit_transform(corpus)
 
         res = cosine_similarity(trsfm[0:1], trsfm)[0][1] * 100
         return res, str(original)
 
-    def compare_texts(self, f_dir: str | Path, s_file_path: str | Path) -> list[tuple[float, str]]:
+    def compare_texts(self, original_dir: str | Path, suspicious_file: str | Path) -> list[tuple[float, str]]:
         """
         Compares all the files in a directory against a single file.
-        :param f_dir: The directory containing the files to compare.
-        :param s_file_path: The file to compare against.
+        :param original_dir: The directory containing the files to compare.
+        :param suspicious_file: The file to compare against.
         :return: A list of tuples containing the cosine similarity between the two documents and the original document's content.
         """
         values = []
-        if not Path(f_dir).is_dir():
+        if not Path(original_dir).is_dir():
             raise ValueError("The provided path is not a directory.")
 
-        for child in Path(f_dir).iterdir():
+        for child in Path(original_dir).iterdir():
             if child.is_file():
-                res = self.compare_text(child, s_file_path)
+                res = self.compare_text(child, suspicious_file)
                 values.append(res)
         return values
