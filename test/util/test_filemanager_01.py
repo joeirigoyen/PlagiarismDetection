@@ -109,3 +109,27 @@ class TestFileManager(unittest.TestCase):
 
         # Reset the read_file mock
         FileManager.read_file.reset_mock()
+
+    def test_extract_file_name_without_ext(self):
+        # Test extracting file name without extension
+        file_path = "path/to/myfile.txt"
+        expected_output = "myfile"
+        self.assertEqual(FileManager.extract_file_name(file_path), expected_output)
+
+    def test_extract_file_name_with_ext(self):
+        # Test extracting file name with extension
+        file_path = "path/to/myfile.txt"
+        expected_output = "myfile.txt"
+        self.assertEqual(FileManager.extract_file_name(file_path, ext=True), expected_output)
+
+    def test_extract_file_name_from_path_object(self):
+        # Test extracting file name from Path object
+        file_path = Path("path/to/myfile.txt")
+        expected_output = "myfile"
+        self.assertEqual(FileManager.extract_file_name(file_path), expected_output)
+
+    def test_extract_file_name_from_path_object_with_ext(self):
+        # Test extracting file name with extension from Path object
+        file_path = Path("path/to/myfile.txt")
+        expected_output = "myfile.txt"
+        self.assertEqual(FileManager.extract_file_name(file_path, ext=True), expected_output)
