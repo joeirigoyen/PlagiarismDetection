@@ -58,3 +58,15 @@ class FileManager:
         for doc in args:
             corpus.append(FileManager.read_file(doc))
         return corpus
+<<<<<<< Updated upstream
+=======
+
+    @staticmethod
+    def extract_file_name(file_path: Path | str, ext: bool = False) -> str:
+        file_path = Path(file_path)
+        if ext:
+            return file_path.name
+        return file_path.stem
+
+
+>>>>>>> Stashed changes

@@ -3,7 +3,6 @@ import shutil
 import tempfile
 import unittest
 from src.util.generator import Generator
-from src.util.file_manager import  FileManager
 
 class TestGenerator(unittest.TestCase):
 
