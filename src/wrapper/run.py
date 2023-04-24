@@ -1,5 +1,3 @@
-import subprocess
-
 from src.algorithms.cosine_algorithm import CosineAlgorithm
 from src.algorithms.model import ModelMediator
 from src.util.ioutils import get_user_input
