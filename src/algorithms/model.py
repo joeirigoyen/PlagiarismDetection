@@ -104,7 +104,7 @@ class ModelMediator(BaseMediator):
         """
         sus_dir = self.__cm.get("SUSPICIOUS_FILES") if not alternative_path else alternative_path
         if Fm.validate_file(sus_dir):
-            size, correct = 0, 0
+            tn, tp, fn, fp = 0, 0, 0, 0
             for f in sus_dir.iterdir():
                 if f.is_file():
                     result = self.compare_dir(self.__cm.get("ORIGINAL_FILES"), f)
@@ -116,13 +116,25 @@ class ModelMediator(BaseMediator):
                     print(f"{file_stem}".center(20, '-'))
                     print(f"Results: {is_plag} ({result[0]:2f}% similarity with {result[1]})")
                     if show_ground_truth:
-                        size += 1
-                        if is_plag == expected:
-                            correct += 1
+                        if is_plag:
+                            if expected:
+                                tp += 1
+                            else:
+                                fp += 1
+                        else:
+                            if expected:
+                                fn += 1
+                            else:
+                                tn += 1
                         # Print results
                         if file_stem in self.__ground_truth.keys():
                             print(f"Expected result: {self.__ground_truth.get(file_stem)}")
                         else:
                             print(f"No ground truth found for file {file_stem}")
             if show_ground_truth:
-                print(f"Accuracy: {correct / size * 100:2f}%")
+                tpr = tp / (tp + fn)
+                fpr = fp / (fp + tn)
+                auc = (1 + tpr - fpr) / 2
+                print(f"True positive rate: {tpr}".ljust(20, ' '))
+                print(f"False positive rate: {fpr}".ljust(20, ' '))
+                print(f"Area under curve: {auc}".ljust(20, ' '))
