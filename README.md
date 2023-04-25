@@ -1,13 +1,13 @@
 # PlagiarismDetection
 This repository contains different activities regarding the Advanced Software Development module. The main goal of the module is to implement different technologies to develop a plagiarism detection software.
 
-Inside resources there are two folders that contain the original texts and the suspicious texts and a .json file that contains the Ground Truth.
+Inside the resources folder there are two folders that contain the original texts and the suspicious texts and a .json file that contains the Ground Truth.
 
-Inside src is the main code with three folders. The algorithms folder contains the cosine algorithm script and the model script which is used to create the mediator and the alogrithms implemented.
+The main code is inside the src folder with three folders. The algorithms folder contains the cosine algorithm script and the model script which is used to create the mediator and the alogrithms implemented.
 
 Inside util there are scripts that help the software in general. config.py initialize the environment variables. file_manager.py contains different modules to manage files and directories under different operating systems. generator.py contains a set of classes that generate different useful data types for testing purposes. Finally, ioutils.py contains the module to manipulate the user's input and the module to load json files.
 
-Inside wrapper there are two scripts, this scripts are used to run the software. demo.py, as the name says, runs a demonstration of the software. The run.py script creates the mediator, adds the Cosin algorithm and returns the comparison of the files from the directory given by the user.
+Inside wrapper there are two scripts, this scripts are used to run the software. demo.py, as the name says, runs a demonstration of the software. The run.py script creates the mediator, adds the Cosine algorithm and returns the comparison of the files from the directory given by the user.
 
 ## Docs
 
