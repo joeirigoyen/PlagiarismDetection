@@ -1,6 +1,6 @@
 from pathlib import Path
 from unittest import TestCase
-from src.algorithms.cosine_algorithm import CosineAlgorithm
+from src.entities.algorithms.main.cosine_algorithm import CosineAlgorithm
 
 
 class TestCosineAlgorithm(TestCase):

@@ -1,7 +1,7 @@
 import json
 
-from src.algorithms.cosine_algorithm import CosineAlgorithm
-from src.algorithms.model import ModelMediator
+from src.entities.algorithms.main.cosine_algorithm import CosineAlgorithm
+from src.entities.algorithms import ModelMediator
 from src.util.config import ConfigManager
 
 

@@ -11,7 +11,7 @@ from typing import Any
 
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from src.algorithms.model import BaseModel
+from src.entities.algorithms.main.model import BaseModel
 from src.util.file_manager import FileManager as Fm
 
 

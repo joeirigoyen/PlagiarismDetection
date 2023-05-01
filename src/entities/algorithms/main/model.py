@@ -112,7 +112,7 @@ class ModelMediator(BaseMediator):
                     file_stem = Fm.extract_file_name(f)
                     expected = self.__ground_truth[file_stem]
                     is_plag = result[0] > 60.0
-                    # Show main results
+                    # Show cliwrapper results
                     print(f"{file_stem}".center(20, '-'))
                     print(f"Results: {is_plag} ({result[0]:2f}% similarity with {result[1]})")
                     if show_ground_truth:
