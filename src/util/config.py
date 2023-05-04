@@ -7,7 +7,14 @@ from pathlib import Path
 
 class ConfigManager:
 
+    _instances = {}
     whitelist = ["PROJECT_ROOT", "SRC", "UTIL", "RESOURCES", "ORIGINAL_FILES", "SUSPICIOUS_FILES", "GROUND_TRUTH"]
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
 
     def __init__(self, json_path: str | Path = None):
         # Initialize dictionary
@@ -19,8 +26,20 @@ class ConfigManager:
             self.__env_vars = self.__initialize_env_vars(self.__root)
 
     @property
+    def root(self) -> Path:
+        return self.__root
+
+    @root.setter
+    def root(self, root: Path) -> None:
+        self.__root = root
+        self.__env_vars = self.__initialize_env_vars(None)
+
+    @property
     def env_vars(self) -> dict:
         return self.__env_vars
+
+    def update_env_var(self, key: str, value: Path) -> None:
+        self.__update_attr(key, value)
 
     def __initialize_env_vars(self, json_path: str | None) -> dict:
         if json_path is not None:

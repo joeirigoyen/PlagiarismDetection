@@ -40,7 +40,7 @@ def do_check_file(params: dict[str, str]) -> None:
     """
     # Check that the input file is valid
     result = None
-    input_file = params.get("input_file")
+    input_file = params.get("path")
     if not input_file or not Fm.validate_file(input_file, create=False):
         perr("Invalid input file. Try again.")
         return result
@@ -57,11 +57,10 @@ def do_check_file(params: dict[str, str]) -> None:
 
     # Get top 10 candidates
     candidates = do_get_top_candidates(10, text_data, params)
-
     # Perform the plagiarism check according to the selected method
     match method:
         case "nlp":
-            nlp_model = NLPModel(TextData(file_content), config.get("ORIGINAL_FILES"))
+            nlp_model = NLPModel(TextData(file_content), candidates)
             nlp_model.check(params)
         case "deep-learning":
             # TODO: Implement deep learning method

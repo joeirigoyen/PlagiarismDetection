@@ -4,6 +4,8 @@ Module to perform different preprocessing methods to the data.
 Author: Raúl Youthan Irigoyen Osorio
 Date: May 3rd 2023
 """
+from typing import List
+
 import nltk
 
 from nltk import ngrams
@@ -73,19 +75,6 @@ class TextData:
             stems.append(stemmer.stem(word))
         return set(stems)
 
-    def vectorize_this(self, method: str = "count") -> list:
-        """
-        Vectorize the data.
-        """
-        match method:
-            case "count":
-                vectorizer = CountVectorizer()
-            case "tfidf":
-                vectorizer = TfidfVectorizer()
-            case _:
-                vectorizer = CountVectorizer()
-        return vectorizer.fit_transform([self.data]).toarray().reshape(1, -1)
-
     def vectorize(self, other, method: str = "count") -> tuple:
         """
         Vectorize the data.
@@ -138,36 +127,19 @@ class TextData:
             case _:
                 return self.cosine_distance(other)
 
-    def get_ngrams(self, n: int) -> list[str]:
+    def get_ngrams(self, n: str) -> set:
         """
         Get the ngrams of the data.
         """
-        return ngrams(self.data.split(), n)
-
-    def get_count_vector(self, method: str) -> list[int]:
-        return self.vectorize(method)
-
-    def tokenize(self, params: dict) -> list[str]:
-        """
-        Tokenize the data according to the preferred method.
-        """
-        match params["token_method"]:
-            case "ngrams":
-                return self.get_ngrams(params["n_grams"])
-            case "count":
-                return
-            case "tfidf":
-                pass
-            case _:
-                pass
+        return set(ngrams(self.data.split(), int(n)))
 
 
 class TextDataDirectory:
-    def __init__(self, data: str | Path) -> None:
+    def __init__(self, data: str | Path | list[TextData]) -> None:
         """
         Class that contains a directory of text data.
         """
-        self.data: list[TextData] = self.__convert_directory(data)
+        self.data: list[TextData] = self.__convert_directory(data) if isinstance(data, str) or isinstance(data, Path) else data
 
     @staticmethod
     def __validate_dir(data: str | Path) -> bool:

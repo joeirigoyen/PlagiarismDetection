@@ -29,7 +29,7 @@ class DeepLearningModel(Model):
         # Gather and preprocess data
         original_data.data.remove_punctuation()
         suspicious_data.data.remove_punctuation()
-        texts = get_list_texts(original_data.data) + get_list_texts(suspicious_data.data)
+        texts = Model.get_list_texts(original_data.data) + Model.get_list_texts(suspicious_data.data)
         # Extract features
         tokenizer = tf.keras.preprocessing.text.Tokenizer()
         tokenizer.fit_on_texts(texts)

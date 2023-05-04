@@ -4,10 +4,15 @@ from src.entities.textdata import TextData, TextDataDirectory
 from abc import ABC, abstractmethod
 from src.cli.ioutils import perr
 
+
 class Model(ABC):
     def __init__(self, name: str, data: TextData | TextDataDirectory) -> None:
         self.name = name
         self.data = data
+
+    @staticmethod
+    def get_list_texts(directory: TextDataDirectory) -> list[str]:
+        return [text.data for text in directory.data]
 
     @staticmethod
     def calculate_text_distance(dist_type: str, text_1: TextData, text_2: TextData) -> float | None:
@@ -28,7 +33,7 @@ class Model(ABC):
     def preprocess(self, types: str) -> None:
         types = types.split(",")
         for t in types:
-            match t:    
+            match t:
                 case "remove_punctuation":
                     self.data.remove_punctuation()
                 case "remove_stopwords":
@@ -42,5 +47,5 @@ class Model(ABC):
                     self.data.remove_punctuation()
 
     @abstractmethod
-    def check(self, params: dict, source_dir: Path) -> None:
+    def check(self, params: dict) -> None:
         pass

@@ -14,7 +14,7 @@ PREFIX = "user> "
 COMMANDS = {
     "system": {
         "exit": syscli.do_exit,
-        "change_dataset": syscli.do_change_dataset
+        "change_source": syscli.do_change_source
     },
     "check": {
         "file": plagcheckcli.do_check_file,
@@ -56,15 +56,9 @@ def parse_line(line: str) -> tuple[str, str, dict[str, str]]:
 def do_command(line: str) -> None:
     """
     Gets the command from the user and executes it.
-    :return: None
     """
-    try:
-        command, sub_command, params = parse_line(line)
-        COMMANDS[command][sub_command](params)
-    except ValueError:
-        perr("Invalid syntax. Try using <command> <sub-command> <param>=<value>,...")
-    except KeyError:
-        perr("Invalid command. Try again.")
+    command, sub_command, params = parse_line(line)
+    COMMANDS[command][sub_command](params)
 
 
 def run() -> None:
