@@ -1,52 +1,61 @@
 from src.entities.model import Model
+from src.entities.textdata import TextData, TextDataDirectory
+from src.util.file_manager import get_max_len, get_list_texts
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Dense, Dropout, Embedding, Conv1D, MaxPooling1D, LSTM, concatenate
+from tensorflow.keras.layers import Input, Dense, Dropout, Embedding, Conv1D, MaxPooling1D, GlobalMaxPooling1D, LSTM, concatenate
 from tensorflow.keras.models import Model
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import f1_score
+from functools import partial
 
 
 class DeepLearningModel(Model):
-    def __init__():
-        pass
+    def __init__(self, original_data: TextData | TextDataDirectory, suspicious_data: TextDataDirectory) -> None:
+        super().__init__("deep_learning", original_data)
+        self.suspicious_data = suspicious_data
+
 
     def check(self, loss_metric: str = "f1_score", optimizer: str  = "sgd") -> None:
         pass
 
     @staticmethod
-    def train_model() -> Model:
-        pass
-        """ input1 = Input(shape=(MAX_SEQUENCE_LENGTH,))
-        input2 = Input(shape=(MAX_SEQUENCE_LENGTH,))
-        embedding_layer = Embedding(MAX_NUM_WORDS, EMBEDDING_DIM)
-        sequence_encoding = embedding_layer(input1)
-        sequence_encoding = Dropout(0.2)(sequence_encoding)
-        sequence_encoding = Conv1D(64, 5, activation='relu')(sequence_encoding)
-        sequence_encoding = MaxPooling1D(pool_size=4)(sequence_encoding)
-        sequence_encoding = LSTM(64)(sequence_encoding)
-        sequence_encoding = Model(inputs=input1, outputs=sequence_encoding)
+    def train_model(original_data, suspicious_data) -> Model:
 
-        pattern_encoding = embedding_layer(input2)
-        pattern_encoding = Dropout(0.2)(pattern_encoding)
-        pattern_encoding = Conv1D(64, 5, activation='relu')(pattern_encoding)
-        pattern_encoding = MaxPooling1D(pool_size=4)(pattern_encoding)
-        pattern_encoding = LSTM(64)(pattern_encoding)
-        pattern_encoding = Model(inputs=input2, outputs=pattern_encoding)
+        f1_loss = partial(tf.keras.backend.binary_crossentropy, from_logits=True)
 
-        merged = concatenate([sequence_encoding.output, pattern_encoding.output])
-        merged = Dense(64, activation='relu')(merged)
-        merged = Dropout(0.2)(merged)
-        merged = Dense(1, activation='sigmoid')(merged)
-        model = Model(inputs=[sequence_encoding.input, pattern_encoding.input], outputs=merged)
+        def f1_metric(y_true, y_pred):
+            return f1_score(y_true, y_pred.round())
 
-        # Compile the model
-        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        # Gather and preprocess data
+        original_data.data.remove_punctuation()
+        suspicious_data.data.remove_punctuation()
+        texts = get_list_texts(original_data.data) + get_list_texts(suspicious_data.data)
+        # Extract features
+        tokenizer = tf.keras.preprocessing.text.Tokenizer()
+        tokenizer.fit_on_texts(texts)
+        sequences = tokenizer.texts_to_sequences(texts)
+        maxlen = get_max_len(texts)
+        features = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=maxlen)
+
+        # Create training and test datasets
+        labels = [0 for _ in range(len(original_data.data))] + [1 for _ in range(len(suspicious_data.data))]
+        train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size=0.2)
+
+        # Build the machine learning model
+        model = tf.keras.Sequential()
+        model.add(Embedding(input_dim=len(tokenizer.word_index) + 1, output_dim=128, input_length=maxlen))
+        model.add(Conv1D(64, kernel_size=3, activation='relu'))
+        model.add(MaxPooling1D(pool_size=2))
+        model.add(Conv1D(128, kernel_size=3, activation='relu'))
+        model.add(GlobalMaxPooling1D())
+        model.add(Dense(128, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(1, activation='sigmoid'))
 
         # Train the model
-        model.fit([x_train_1, x_train_2], y_train, validation_data=([x_val_1, x_val_2], y_val), epochs=10, batch_size=64)
+        model.compile(optimizer='sgd', loss=f1_loss, metrics=[f1_metric])
+        model.fit(train_features, train_labels, epochs=10, batch_size=32, validation_data=(test_features, test_labels))
 
         # Evaluate the model
-        score, acc = model.evaluate([x_test_1, x_test_2], y_test, batch_size=64)
-
-        # Use the model to detect plagiarism
-        new_document = preprocess_text(new_document)
-        numerical_data = convert_to_numerical(new_document)
-        plagiarism_score = model.predict(numerical_data) """
+        test_f1 = f1_score(test_labels, model.predict(test_features).round())
+        print('\nTest F1 score:', test_f1)
