@@ -67,6 +67,27 @@ class TextData:
         pass
 
 
-if __name__ == '__main__':
-    textdata = TextData("Hello, people of the world! I love everyone!")
-    textdata.remove_stopwords()
+class TextDataDirectory:
+    def __init__(self, data: str | Path) -> None:
+        """
+        Class that contains a directory of text data.
+        """
+        self.data = self.__convert_directory(data)
+
+    @staticmethod
+    def __validate_dir(data: str | Path) -> bool:
+        datapath = Path(data)
+        return datapath.exists() and datapath.is_dir()
+
+    def __convert_directory(self, data: str | Path) -> list[TextData]:
+        """
+        Convert the data directory into a list of TextData objects.
+        """
+        textdata_list = []
+        if self.__validate_dir(data):
+            for file in Path(data).iterdir():
+                if file.is_file() and file.suffix == ".txt":
+                    textdata_list.append(TextData(Fm.read_file(file)))
+            return textdata_list
+        else:
+            raise FileNotFoundError("The specified path does not exist or is not a directory.")
