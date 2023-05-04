@@ -38,7 +38,18 @@ class UnitaryFile:
 
 class FileManager:
     @staticmethod
-    def validate_file(file_path: Any, create: bool = True) -> bool | None:
+    def validate_dir(dir_path: str | Path, create: bool = True) -> bool:
+        curr_dir = UnitaryFile(dir_path)
+        if not curr_dir.exists():
+            if create:
+                curr_dir.create()
+                return True
+            else:
+                return False
+        return True
+
+    @staticmethod
+    def validate_file(file_path: Any, create: bool = True) -> bool:
         curr_file = UnitaryFile(file_path)
         if not curr_file.exists():
             if create:
