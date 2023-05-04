@@ -6,13 +6,20 @@ Date: April 24th, 2023
 """
 
 import commands.system as syscli
+import commands.plagcheck as plagcheckcli
 
 from src.cli.ioutils import perr
 
 PREFIX = "user> "
 COMMANDS = {
     "system": {
-        "exit": syscli.do_exit
+        "exit": syscli.do_exit,
+        "change_dataset": syscli.do_change_dataset
+    },
+    "check": {
+        "file": plagcheckcli.do_check_file,
+        "dir": plagcheckcli.do_check_dir,
+        "plot_last": plagcheckcli.do_plot_last
     }
 }
 
@@ -53,12 +60,9 @@ def do_command(line: str) -> None:
     """
     try:
         command, sub_command, params = parse_line(line)
-        if len(params):
-            COMMANDS[command][sub_command](params)
-        else:
-            COMMANDS[command][sub_command]()
+        COMMANDS[command][sub_command](params)
     except ValueError:
-        perr("Invalid syntax. Try using <command> <sub-command> <params>.")
+        perr("Invalid syntax. Try using <command> <sub-command> <param>=<value>,...")
     except KeyError:
         perr("Invalid command. Try again.")
 
