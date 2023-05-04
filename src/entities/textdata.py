@@ -6,6 +6,7 @@ Date: May 3rd 2023
 """
 import nltk
 
+from nltk import ngrams
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
@@ -72,6 +73,19 @@ class TextData:
             stems.append(stemmer.stem(word))
         return set(stems)
 
+    def vectorize_this(self, method: str = "count") -> list:
+        """
+        Vectorize the data.
+        """
+        match method:
+            case "count":
+                vectorizer = CountVectorizer()
+            case "tfidf":
+                vectorizer = TfidfVectorizer()
+            case _:
+                vectorizer = CountVectorizer()
+        return vectorizer.fit_transform([self.data]).toarray().reshape(1, -1)
+
     def vectorize(self, other, method: str = "count") -> tuple:
         """
         Vectorize the data.
@@ -106,6 +120,46 @@ class TextData:
         """
         vector_1, vector_2 = self.vectorize(other)
         return euclidean_distances(vector_1, vector_2)[0][0]
+
+    def get_distance(self, other, method: str):
+        """
+        Get the distance between two TextData objects according to a provided method.
+        :param other: The other TextData object.
+        :param method: The preferred method.
+        :return: The result of the measurement.
+        """
+        match method:
+            case "cosine":
+                return self.cosine_distance(other)
+            case "jaccard":
+                return self.jaccard_distance(other)
+            case "euclidean":
+                return self.euclidean_distance(other)
+            case _:
+                return self.cosine_distance(other)
+
+    def get_ngrams(self, n: int) -> list[str]:
+        """
+        Get the ngrams of the data.
+        """
+        return ngrams(self.data.split(), n)
+
+    def get_count_vector(self, method: str) -> list[int]:
+        return self.vectorize(method)
+
+    def tokenize(self, params: dict) -> list[str]:
+        """
+        Tokenize the data according to the preferred method.
+        """
+        match params["token_method"]:
+            case "ngrams":
+                return self.get_ngrams(params["n_grams"])
+            case "count":
+                return
+            case "tfidf":
+                pass
+            case _:
+                pass
 
 
 class TextDataDirectory:
@@ -177,3 +231,19 @@ class TextDataDirectory:
         for textdata in self.data:
             stems.append(textdata.stem())
         return stems
+
+    def preprocess(self, method: str):
+        """
+        Preprocess each data file.
+        """
+        match method:
+            case "punctuation":
+                return self.remove_punctuation()
+            case "stopwords":
+                return self.remove_stopwords()
+            case "lemmatize":
+                return self.lemmatize()
+            case "stem":
+                return self.stem()
+            case _:
+                return self.remove_punctuation()
