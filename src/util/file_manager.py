@@ -4,6 +4,8 @@ Contains different modules to manage files and directories under different opera
 Authors: Youthan Irigoyen, Eduardo Rodríguez
 Creation date: 04-20-2023
 """
+import nltk
+
 from pathlib import Path
 from typing import Any
 
@@ -65,3 +67,8 @@ class FileManager:
         if ext:
             return file_path.name
         return file_path.stem
+
+    @staticmethod
+    def download_nltk_stopwords(path: str | Path) -> None:
+        if not Path(path).exists():
+            nltk.download('stopwords', download_dir=path)
