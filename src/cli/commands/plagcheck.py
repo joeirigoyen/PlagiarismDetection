@@ -1,5 +1,8 @@
 """
+Module to handle the plagiarism check commands.
 
+Author: Raúl Youthan Irigoyen Osorio
+Date: May 3rd, 2023
 """
 
 from src.cli.ioutils import perr

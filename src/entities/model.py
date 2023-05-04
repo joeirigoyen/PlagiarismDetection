@@ -7,6 +7,21 @@ class Model(ABC):
         self.name = name
         self.data = data
 
+    @staticmethod
+    def calculate_text_distance(dist_type: str, text_1: TextData, text_2: TextData) -> float | None:
+        """
+        Calculates the distance between two texts.
+        """
+        match dist_type:
+            case "cosine":
+                return text_1.cosine_distance(text_2)
+            case "jaccard":
+                return text_1.jaccard_distance(text_2)
+            case "euclidean":
+                return text_1.euclidean_distance(text_2)
+            case _:
+                perr(f"Invalid distance type: {dist_type}")
+                return None
 
     def preprocess(self, types: list[str]) -> None:
         for t in types:
