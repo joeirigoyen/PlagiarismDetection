@@ -11,6 +11,8 @@ from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 from os import path
 from pathlib import Path
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 from src.util.file_manager import FileManager as Fm
 from string import punctuation
 
@@ -53,7 +55,7 @@ class TextData:
         Lemmatize the data.
         """
         lemmatizer = WordNetLemmatizer()
-        words = nltk.word_tokenize(self.remove_punctuation(self))
+        words = nltk.word_tokenize(self.remove_punctuation())
         lemms = []
         for word in words:
             lemms.append(lemmatizer.lemmatize(word))
@@ -64,12 +66,36 @@ class TextData:
         Stem the data.
         """
         stemmer = PorterStemmer()
-        words = nltk.word_tokenize(self.remove_punctuation(self))
+        words = nltk.word_tokenize(self.remove_punctuation())
         stems = []
         for word in words:
             stems.append(stemmer.stem(word))
         return set(stems)
 
+    def vectorize(self) -> list:
+        """
+        Vectorize the data.
+        """
+        vectorizer = CountVectorizer()
+        return vectorizer.fit_transform(self.data)
+
+    def cosine_distance(self, other) -> float:
+        """
+        Calculate the cosine distance between two TextData objects.
+        """
+        return cosine_similarity(self.vectorize(), other.vectorize())[0][0]
+
+    def jaccard_distance(self, other) -> float:
+        """
+        Calculate the jaccard distance between two TextData objects.
+        """
+        return len(self.lemmatize().intersection(other.lemmatize())) / len(self.lemmatize().union(other.lemmatize()))
+
+    def euclidean_distance(self, other) -> float:
+        """
+        Calculate the euclidean distance between two TextData objects.
+        """
+        return euclidean_distances(self.vectorize(), other.vectorize())[0][0]
 
 class TextDataDirectory:
     def __init__(self, data: str | Path) -> None:
@@ -132,7 +158,6 @@ class TextDataDirectory:
             lemms.append(textdata.lemmatize())
         return lemms
 
-
     def stem(self) -> list[set]:
         """
         Stem the data.
@@ -141,3 +166,9 @@ class TextDataDirectory:
         for textdata in self.data:
             stems.append(textdata.stem())
         return stems
+
+
+if __name__ == '__main__':
+    text_data = TextData("This is a test sentence.")
+    text_data2 = TextData("Current sentece is described as a test.")
+    print(text_data.jaccard_distance(text_data2))
