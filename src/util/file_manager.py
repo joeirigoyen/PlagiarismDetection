@@ -9,6 +9,8 @@ import nltk
 from pathlib import Path
 from typing import Any
 
+from src.entities.textdata import TextDataDirectory
+
 
 class UnitaryFile:
     def __init__(self, file_path: str | Path):
@@ -83,3 +85,11 @@ class FileManager:
     def download_nltk_stopwords(path: str | Path) -> None:
         if not Path(path).exists():
             nltk.download('stopwords', download_dir=path)
+
+    @staticmethod
+    def get_max_len(texts: list[str]) -> int:
+        return max(len(text.split()) for text in texts)
+    
+    @staticmethod
+    def get_list_texts(dir: TextDataDirectory) -> list[str]:
+        return [text.data for text in dir.data]
