@@ -11,7 +11,7 @@ from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
 from os import path
 from pathlib import Path
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 from src.util.file_manager import FileManager as Fm
 from string import punctuation
@@ -72,18 +72,27 @@ class TextData:
             stems.append(stemmer.stem(word))
         return set(stems)
 
-    def vectorize(self) -> list:
+    def vectorize(self, other, method: str = "count") -> tuple:
         """
         Vectorize the data.
         """
-        vectorizer = CountVectorizer()
-        return vectorizer.fit_transform(self.data)
+        match method:
+            case "count":
+                vectorizer = CountVectorizer()
+            case "tfidf":
+                vectorizer = TfidfVectorizer()
+            case _:
+                vectorizer = CountVectorizer()
+        corpus = [self.data, other.data]
+        transform = vectorizer.fit_transform(corpus).toarray()
+        return transform[0].reshape(1, -1), transform[1].reshape(1, -1)
 
-    def cosine_distance(self, other) -> float:
+    def cosine_distance(self, other, vector: str = "count") -> float:
         """
         Calculate the cosine distance between two TextData objects.
         """
-        return cosine_similarity(self.vectorize(), other.vectorize())[0][0]
+        vector_1, vector_2 = self.vectorize(other, method=vector)
+        return cosine_similarity(vector_1, vector_2)[0][0]
 
     def jaccard_distance(self, other) -> float:
         """
@@ -95,7 +104,9 @@ class TextData:
         """
         Calculate the euclidean distance between two TextData objects.
         """
-        return euclidean_distances(self.vectorize(), other.vectorize())[0][0]
+        vector_1, vector_2 = self.vectorize(other)
+        return euclidean_distances(vector_1, vector_2)[0][0]
+
 
 class TextDataDirectory:
     def __init__(self, data: str | Path) -> None:
@@ -166,9 +177,3 @@ class TextDataDirectory:
         for textdata in self.data:
             stems.append(textdata.stem())
         return stems
-
-
-if __name__ == '__main__':
-    text_data = TextData("This is a test sentence.")
-    text_data2 = TextData("Current sentece is described as a test.")
-    print(text_data.jaccard_distance(text_data2))
