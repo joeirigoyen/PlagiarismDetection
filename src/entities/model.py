@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from src.entities.textdata import TextData, TextDataDirectory
 from abc import ABC, abstractmethod
 from src.cli.ioutils import perr
@@ -23,7 +25,8 @@ class Model(ABC):
                 perr(f"Invalid distance type: {dist_type}")
                 return None
 
-    def preprocess(self, types: list[str]) -> None:
+    def preprocess(self, types: str) -> None:
+        types = types.split(",")
         for t in types:
             match t:    
                 case "remove_punctuation":
@@ -35,8 +38,9 @@ class Model(ABC):
                 case "stem":
                     self.data.stem()
                 case _:
-                    perr(f"Invalid preprocessing type: {t}")
+                    perr(f"Invalid preprocessing type: {t}. Using default preprocessing types (removing punctuation).")
+                    self.data.remove_punctuation()
 
     @abstractmethod
-    def check(self) -> None:
+    def check(self, params: dict, source_dir: Path) -> None:
         pass

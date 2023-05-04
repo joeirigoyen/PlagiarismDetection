@@ -16,7 +16,7 @@ class ConfigManager:
         try:
             self.__env_vars = self.__initialize_env_vars(json_path)
         except FileNotFoundError:
-            self.__env_vars = self.__initialize_env_vars(None, self.__root)
+            self.__env_vars = self.__initialize_env_vars(self.__root)
 
     @property
     def env_vars(self) -> dict:
