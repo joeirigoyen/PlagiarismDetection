@@ -1,9 +1,17 @@
+"""
+Module to perform unit tests for the file_manager code.
+
+Author: Rebeca Rojas Pérez
+Date: May 3rd 2023
+"""
+
 import os
 import tempfile
 import unittest
+
 from pathlib import Path
-from unittest.mock import MagicMock
 from src.util.file_manager import UnitaryFile, FileManager
+from unittest.mock import MagicMock
 
 
 class TestUnitaryFile(unittest.TestCase):
