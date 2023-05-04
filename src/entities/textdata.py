@@ -7,6 +7,7 @@ Date: May 3rd 2023
 import nltk
 
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 from os import path
 from pathlib import Path
 from src.util.file_manager import FileManager as Fm
@@ -64,7 +65,12 @@ class TextData:
         """
         Stem the data.
         """
-        pass
+        stemmer = PorterStemmer()
+        words = nltk.word_tokenize(self.remove_punctuation(self.data))
+        stems = []
+        for word in words:
+            stems.append(stemmer.stem(word))
+        return set(stems)
 
 
 class TextDataDirectory:
