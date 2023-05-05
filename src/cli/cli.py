@@ -18,8 +18,7 @@ COMMANDS = {
     },
     "check": {
         "file": plagcheckcli.do_check_file,
-        "dir": plagcheckcli.do_check_dir,
-        "plot_last": plagcheckcli.do_plot_last
+        "dir": plagcheckcli.do_check_dir
     }
 }
 

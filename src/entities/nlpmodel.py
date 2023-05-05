@@ -3,7 +3,6 @@ from pathlib import Path
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import euclidean_distances, cosine_similarity
-from src.cli.ioutils import perr
 from src.entities.model import Model
 from src.entities.textdata import TextData, TextDataDirectory
 
@@ -36,7 +35,6 @@ class NLPModel(Model):
             case "euclidean":
                 return euclidean_distances(vec_1, vec_2)[0][0]
             case _:
-                perr("Invalid distance method. Using cosine distance.")
                 return cosine_similarity(vec_1, vec_2)[0][0]
 
     def get_ngrams_distance(self, params: dict) -> list:
@@ -65,12 +63,11 @@ class NLPModel(Model):
             corpus = [self.data.data, source.data]
             match params.get("vectorizer"):
                 case "count":
-                    vectorizer = CountVectorizer()
+                    vectorizer = CountVectorizer(analyzer="word", ngram_range=(2, 8))
                 case "tfidf":
-                    vectorizer = TfidfVectorizer()
+                    vectorizer = TfidfVectorizer(analyzer="word", ngram_range=(2, 8))
                 case _:
-                    perr("Invalid vectorizer. Using count vectorizer.")
-                    vectorizer = CountVectorizer()
+                    vectorizer = CountVectorizer(analyzer="word", ngram_range=(2, 8))
             transform = vectorizer.fit_transform(corpus)
             vector_1 = transform.toarray()[0].reshape(1, -1)
             vector_2 = transform.toarray()[1].reshape(1, -1)
@@ -78,6 +75,25 @@ class NLPModel(Model):
             filename = self.candidates[index][0]
             result.append((filename, score))
         return result
+
+    @staticmethod
+    def analyze(params: dict, result: list) -> None:
+        """
+        Print a report of the result.
+        :param params: The parameters for the calculation given by the user.
+        :param result: The result of the calculation for each source file.
+        """
+        max_result = max(result, key=lambda x: x[1])
+        print(f"Most similar file: {max_result[0]}")
+        match params.get("preprocess"):
+            case "stem" | "lemmatize":
+                threshold = params.get("threshold") or 10.0
+                print(f"Similarity score: {max_result[1]}%")
+                print(f"File is {'not' if max_result[1] < threshold else ''} potentially plagiarized")
+            case "remove_stopwords" | "remove_punctuation" | _:
+                threshold = params.get("threshold") or 0.6
+                print(f"Similarity score: {max_result[1]}%")
+                print(f"File is {'not' if max_result[1] < threshold else ''} potentially plagiarized")
 
     def check(self, params: dict) -> None:
         # Perform preprocessing on suspicious text
@@ -92,6 +108,6 @@ class NLPModel(Model):
             case "remove_stopwords" | "remove_punctuation":
                 result = self.get_tokens_distance(params)
             case _:
-                perr("Invalid preprocessing method. Using ngrams.")
                 result = self.get_ngrams_distance(params)
-        print(result)
+        # Sort the result
+        self.analyze(params, result)
