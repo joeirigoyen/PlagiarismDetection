@@ -31,12 +31,12 @@ class Model(ABC):
                 return None
 
     def preprocess(self, types: str) -> None:
-        types = types.split(",")
+        types = types.split(",") if types else ["unpunctuate"]
         for t in types:
             match t:
-                case "remove_punctuation":
+                case "unpunctuate":
                     self.data.remove_punctuation()
-                case "remove_stopwords":
+                case "stopwords":
                     self.data.remove_stopwords()
                 case "lemmatize":
                     self.data.lemmatize()

@@ -34,7 +34,7 @@ class SVMModel:
 
 
     def predict(self, params: dict, train: bool = False) -> None:
-        model_name = params.get("model", "svm")
+        model_name = params.get("model", "linear_svc")
         
         nltk.download('stopwords', quiet=True)
 
@@ -90,11 +90,11 @@ class SVMModel:
         
             y_pred = model.predict(X_test)
 
-            print("Accuracy:",f'{metrics.accuracy_score(y_test, y_pred) * 100:.2f}%')
+            print("Accuracy:", f'{metrics.accuracy_score(y_test, y_pred) * 100:.2f}%')
 
             print("Precision:", f'{metrics.precision_score(y_test, y_pred, average="weighted"):.2f}')
 
-            print("Recall:",f'{metrics.recall_score(y_test, y_pred, average="weighted"):.2f}')
+            print("Recall:", f'{metrics.recall_score(y_test, y_pred, average="weighted"):.2f}')
 
             print('Confusion matrix:',metrics.confusion_matrix(y_test, y_pred))
 

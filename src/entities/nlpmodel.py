@@ -88,12 +88,12 @@ class NLPModel(Model):
         match params.get("preprocess"):
             case "stem" | "lemmatize":
                 threshold = params.get("threshold") or 10.0
-                print(f"Similarity score: {max_result[1]}%")
-                print(f"File is {'not' if max_result[1] < threshold else ''} potentially plagiarized")
+                print(f"Similarity score: {max_result[1]} (using {params.get('distance') or 'cosine'} distance)")
+                print(f"File is {'not ' if max_result[1] < threshold else ''}potentially plagiarized")
             case "remove_stopwords" | "remove_punctuation" | _:
                 threshold = params.get("threshold") or 0.6
-                print(f"Similarity score: {max_result[1]}%")
-                print(f"File is {'not' if max_result[1] < threshold else ''} potentially plagiarized")
+                print(f"Similarity score: {max_result[1]} (using {params.get('distance') or 'cosine'} distance)")
+                print(f"File is {'not ' if max_result[1] < threshold else ''}potentially plagiarized")
 
     def check(self, params: dict) -> None:
         # Perform preprocessing on suspicious text
@@ -105,7 +105,7 @@ class NLPModel(Model):
         match preprocessing_method:
             case "stem" | "lemmatize":
                 result = self.get_ngrams_distance(params)
-            case "remove_stopwords" | "remove_punctuation":
+            case "stopwords" | "unpunctuate":
                 result = self.get_tokens_distance(params)
             case _:
                 result = self.get_ngrams_distance(params)

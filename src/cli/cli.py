@@ -20,8 +20,9 @@ COMMANDS = {
         "file": plagcheckcli.do_check_file,
         "dir": plagcheckcli.do_check_dir
     },
-    "ml":{
-        "predict": plagcheckcli.do_predict
+    "ml": {
+        "predict": plagcheckcli.do_predict,
+        "predict_dir": plagcheckcli.do_predict_dir
     }
 }
 

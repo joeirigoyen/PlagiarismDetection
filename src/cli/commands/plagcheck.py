@@ -4,6 +4,7 @@ Module to handle the plagiarism check commands.
 Author: Raúl Youthan Irigoyen Osorio
 Date: May 3rd, 2023
 """
+import os.path
 from heapq import nlargest
 from pathlib import Path
 from src.cli.ioutils import perr
@@ -89,6 +90,9 @@ def do_check_dir(params: dict[str, str]) -> None:
     # Parse input files contents to TextData
     for f in Path(input_dir).iterdir():
         if f.is_file() and f.suffix == ".txt":
+            # Print current file
+            print(f"{f.name}".center(20, "-"))
+            # Check that the input file is valid
             file_content = Fm.read_file(f)
             text_data = TextData(file_content)
             # Get top 10 candidates
@@ -114,3 +118,25 @@ def do_predict(params: dict[str, str]) -> None:
     text_data = TextData(file_content)
     svm_model = SVMModel(text_data)
     svm_model.predict(params)
+
+
+def do_predict_dir(params: dict[str, str]) -> None:
+    """
+        Perform a plagiarism check on a directory.
+        :return:
+        """
+    # Check that the input file is valid
+    if not validate_params(params):
+        return None
+    input_file = params.get("path")
+    # Parse input file content to TextData
+    if os.path.exists(input_file) and os.path.isdir(input_file):
+        for f in Path(input_file).iterdir():
+            if f.is_file() and f.suffix == ".txt":
+                # Print current file
+                print(f"{f.name}".center(20, "-"))
+                # Check that the input file is valid
+                file_content = Fm.read_file(f)
+                text_data = TextData(file_content)
+                svm_model = SVMModel(text_data)
+                svm_model.predict(params)

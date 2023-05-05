@@ -209,7 +209,7 @@ class TextDataDirectory:
         Preprocess each data file.
         """
         match method:
-            case "punctuation":
+            case "unpunctuate":
                 return self.remove_punctuation()
             case "stopwords":
                 return self.remove_stopwords()
