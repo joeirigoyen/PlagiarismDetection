@@ -112,4 +112,4 @@ class SVMModel:
 
             print("Predicted label:", "File is not plagiarized" if y_pred == 0 else "File is plagiarized")
             if confidence is not None:
-                print("Confidence:", confidence)
+                print("Score:", confidence)
