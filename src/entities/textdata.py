@@ -75,17 +75,17 @@ class TextData:
             stems.append(stemmer.stem(word))
         return set(stems)
 
-    def vectorize(self, other, method: str = "count") -> tuple:
+    def vectorize(self, other, method: str = "count", n_grams: int = 8) -> tuple:
         """
         Vectorize the data.
         """
         match method:
             case "count":
-                vectorizer = CountVectorizer()
+                vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, n_grams))
             case "tfidf":
-                vectorizer = TfidfVectorizer()
+                vectorizer = TfidfVectorizer(analyzer='word', ngram_range=(1, n_grams))
             case _:
-                vectorizer = CountVectorizer()
+                vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, n_grams))
         corpus = [self.data, other.data]
         transform = vectorizer.fit_transform(corpus).toarray()
         return transform[0].reshape(1, -1), transform[1].reshape(1, -1)
@@ -103,11 +103,11 @@ class TextData:
         """
         return len(self.lemmatize().intersection(other.lemmatize())) / len(self.lemmatize().union(other.lemmatize()))
 
-    def euclidean_distance(self, other) -> float:
+    def euclidean_distance(self, other, vector: str = "count") -> float:
         """
         Calculate the euclidean distance between two TextData objects.
         """
-        vector_1, vector_2 = self.vectorize(other)
+        vector_1, vector_2 = self.vectorize(other, method=vector)
         return euclidean_distances(vector_1, vector_2)[0][0]
 
     def get_distance(self, other, method: str):
