@@ -1,0 +1,10 @@
+Plagiarism refers to the appropriation of someone else’s ideas and expression. Its ubiquity makes it necessary to
+counter it, and invites the development of commercial systems to do so. In this document we introduce Docode
+5, a system for plagiarism detection that can perform analyses on the World Wide Web and on user-defined
+collections, and can be used as a decision support system. Our contribution in this document is to present this
+system in all its range of components, from the algorithms used in it to the user interfaces, and the issues with
+deployment on a commercial scale at an algorithmic and architectural level. We ran performance tests on the
+plagiarism detection algorithm showing an acceptable performance from an academic and commercial point
+of view, and load tests on the deployed system, showing that we can benefit from a distributed deployment.
+With this, we conclude we can adapt algorithms made for small-scale plagiarism detection to a commercial-scale
+system.

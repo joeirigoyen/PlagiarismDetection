@@ -1,0 +1,1 @@
+We have created static analysis for Python, a type system for tracking tensors-Tensorflow's core data structures-and a data flow analysis to track their usage.  In short, they are not autonomous. This research aims to validate the effectiveness of a machine learning model composed of three classifiers: decision tree, logistic regression, and support vector machines. 

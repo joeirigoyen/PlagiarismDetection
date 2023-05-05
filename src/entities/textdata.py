@@ -219,3 +219,13 @@ class TextDataDirectory:
                 return self.stem()
             case _:
                 return self.remove_punctuation()
+            
+
+    def get_ngrams(self, n: str) -> list[set]:
+        """
+        Get the ngrams of the data.
+        """
+        ngrams = []
+        for f in self.data:
+            ngrams.append(f.get_ngrams(n))
+        return ngrams
