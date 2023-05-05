@@ -8,6 +8,7 @@ from heapq import nlargest
 from pathlib import Path
 from src.cli.ioutils import perr
 from src.entities.nlpmodel import NLPModel
+from src.entities.svm import SVMModel
 from src.entities.textdata import TextData
 from src.util.config import ConfigManager as Cm
 from src.util.file_manager import FileManager as Fm
@@ -97,3 +98,19 @@ def do_check_dir(params: dict[str, str]) -> None:
                 case "nlp":
                     nlp_model = NLPModel(TextData(file_content), candidates)
                     nlp_model.check(params)
+
+
+def do_predict(params: dict[str, str]) -> None:
+    """
+    Perform a plagiarism check on a file.
+    :return:
+    """
+    # Check that the input file is valid
+    if not validate_params(params):
+        return None
+    input_file = params.get("path")
+    # Parse input file content to TextData
+    file_content = Fm.read_file(Path(input_file))
+    text_data = TextData(file_content)
+    svm_model = SVMModel(text_data)
+    svm_model.predict(params)
