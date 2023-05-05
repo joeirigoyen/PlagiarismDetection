@@ -1,0 +1,16 @@
+With the extensive availability of technological systems all over the world and the increasing diffusion of
+information and documents by users, especially for the Arabic population, the development of semantic
+plagiarism detection systems has become essential due to its importance for protecting the rights of
+authors. Developing such a system that can covers the content of all Arabic documents using ontology
+as a semantic resource would be a complex and time-consuming task and would require intelligent nat-
+ural language-processing capabilities.
+In the context of Arabic plagiarism detection systems using an Arabic ontology and permitting these
+systems to support semantic representation to more efficiently verify the originality of the research
+and meet the needs of researchers, this paper presents a novel approach for addressing plagiarism named
+Multi-agents Indexing System. The proposed system is composed of three phases: (1) natural language
+processing phase, (2) indexing phase and (3) evaluation phase.
+Our experimentations are based on the training dataset released for the AraPlagDet curpus. The
+obtained results indicated that the proposed system has improved the performance of plagiarism detec-
+tion in Arabic documents with semantic indexing and mutli-agents system.
+Ó 2020 The Authors. Published by Elsevier B.V. on behalf of King Saud University. This is an open access
+article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4.0/).

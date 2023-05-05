@@ -1,0 +1,17 @@
+Plagiarism is a misconduct, which refers to the use of scientific and literary content contained in other sources
+without reference to them. Today, the rise of plagiarism has become a serious problem for publishers and re­
+searchers. Many researchers have discussed this problem and tried to identify types of plagiarism; however, most
+of these methods are not effective in detecting intelligent plagiarism. In other words, most of these methods focus
+on direct copying. Therefore, in this study, two methods are proposed to identify Extrinsic plagiarism. In both
+methods, to limit the search space, two stages of filtering based on the bag of word (BoW) technique are used at
+the document level and at the sentence level, and plagiarism is investigated only in the outputs of these two
+stages. In the first method to detect similarities in suspicious documents and sentences, the combination of pre-
+trained network technique of words embedding FastText and TF-IDF weighting technique to form two structural
+and semantic matrices and in the second method to form the two matrices, WordNet ontology and weighting TF-
+IDF is used. After forming the above matrices and calculating the similarity between the pairs of matrices of each
+sentence, using the Dice similarity and the structural similarity of the weighted composition, two similarity
+values are calculated. By comparing the similarity of suspicious sentences with the minimum threshold, the
+document containing the suspicious sentence receives the label of plagiarism or non-plagiarism. Experimental
+results on the PAN-PC-11 database show that the first method has achieved 95.1% precision and the second
+method 93.8% precision, which shows that the use of word embedding network compared to WordNet ontology
+can be more successful in detecting Extrinsic plagiarism.

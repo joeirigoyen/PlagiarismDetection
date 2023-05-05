@@ -1,0 +1,20 @@
+The exponential growth of documents in various languages throughout the web, along with the availability
+of several editing and translation tools have made the cross-language plagiarism detection a challenging
+issue. Regarding its high importance, the present study focuses on the task of cross-language text align-
+ment also known as detailed analysis which works on the outputs of the source retrieval step of cross-
+language plagiarism detection systems. The paper proposes a two-level matching approach with the
+aim of considering both syntactic and semantic information to align plagiarism fragments from the source
+and suspicious documents, accurately. At the first level, a vector space model which employs a multilingual
+word embeddings based dictionary and a local weighting technique is used in order to extract a minimal
+set of highly potential candidate fragment pairs rather than considering all possible pairs of fragments. This
+step also contains a dynamic expansion technique to cover more candidate pairs aiming at improving the
+system’s recall. It is followed by a more precise algorithm that examines the candidate pairs at the sentence
+level using a graph-of-words representation of text. As a result, by modelling both the words and their rela-
+tionships, an acceptable increase in the system’s precision which is the goal of the second level is also
+observed. To identify evidence of plagiarism, i.e. potential cases of unauthorized text reuse, the algorithm
+tries to find maximum cliques from the match graph of source and suspicious texts. With this two-level
+investigation, the approach is capable to discriminate true plagiarism cases from the original text. The
+experimental results on different datasets such as PAN-PC-11, PAN-PC-12, and SemEval-2017 show that
+the proposed cross-language text alignment approach significantly outperforms the state-of-the-art mod-
+els and can be fed into an expert system for further improvement of cross-language plagiarism detection.
+The source codes are publicly available on GitHub1, for the purposes of reproducible research.

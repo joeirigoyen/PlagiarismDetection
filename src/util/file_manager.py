@@ -61,9 +61,12 @@ class FileManager:
 
     @staticmethod
     def read_file(file_path: Path) -> str:
-        with open(file_path, 'r', encoding="utf-8") as file:
-            file_contents = file.read()
-        return file_contents
+        try: 
+            with open(file_path, 'r', encoding="utf-8") as file:
+                file_contents = file.read()
+            return file_contents
+        except UnicodeDecodeError:
+            print(file_path)
 
     @staticmethod
     def create_corpus(*args: Path) -> list[str]:

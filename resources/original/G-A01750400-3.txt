@@ -1,0 +1,15 @@
+Due to the rapid growth of documents and manuscripts in various languages all over the world,
+plagiarism detection has become a challenging task, especially for cross lingual cases. Because of
+this issue, in today's plagiarism detection systems, a candidate retrieval process is developed as
+the first step, in order to reduce the set of documents for comparison to a reasonable number. The
+performance of the second step of plagiarism detection, which is devoted to a detailed analysis of
+the candidates is tightly dependent on the candidate retrieval phase. Regarding its high im-
+portance, the present study focuses on the candidate retrieval task and aims to extract the
+minimal set of highly potential source documents, accurately. The paper proposes a fusion of
+concept-based and keyword-based retrieval models for this purpose. A dynamic interpolation
+factor is used in the proposed scheme in order to combine the results of conceptual and bag-of-
+words models. The effectiveness of the proposed model for cross language candidate retrieval is
+also compared with state-of-the-art models over German-English and Spanish-English language
+partitions. The results show that the proposed candidate retrieval model outperforms the state-of-
+the-art models and can be considered as a proper choice to be embedded in cross-language
+plagiarism detection systems.

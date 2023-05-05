@@ -1,0 +1,15 @@
+Source retrieval for plagiarism detection retrieves documents that may be the sources of
+plagiarism for a suspicious document while minimizing the retrieval costs. Compared with
+traditional information retrieval, queries from the same suspicious document retain their
+contextual relations and are no longer isolated from each other. The correlation of queries
+leads to the aggregation of search results; the documents retrieved by different queries
+may be relevant or the same. However, previous studies have failed to devote sufficient
+attention to the aggregation of search results in source retrieval. In this paper, the task of
+source retrieval is formalized into a framework of learning to rank, and a Ranking Logis-
+tical Regression Model is utilized to implement the framework. Furthermore, addressing
+the aggregation of search results, we propose the Source Retrieval Model Focused on Ag-
+gregation for plagiarism detection. We evaluate various aspects of the proposed model on
+the PAN 2013 and the PAN 2014 Plagiarism Source Retrieval Corpus. With respect to estab-
+lished baselines, the experimental results indicate that the Source Retrieval Model Focused
+on Aggregation yields statistically significantly improved performance of source retrieval
+with equal or lower cost effectiveness.

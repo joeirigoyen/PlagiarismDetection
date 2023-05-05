@@ -1,0 +1,14 @@
+Cross-language (CL) plagiarism detection aims at detecting plagiarised fragments of text among docu-
+ments in different languages. The main research question of this work is on whether knowledge graph
+representations and continuous space representations can complement to each other and improve the
+state-of-the-art performance in CL plagiarism detection methods. In this sense, we propose and evaluate
+hybrid models to assess the semantic similarity of two segments of text in different languages. The pro-
+posed hybrid models combine knowledge graph representations with continuous space representations
+aiming at exploiting their complementarity in capturing different aspects of cross-lingual similarity. We
+also present the continuous word alignment-based similarity analysis, a new model to estimate simi-
+larity between text fragments. We compare the aforementioned approaches with several state-of-the-art
+models in the task of CL plagiarism detection and study their performance in detecting different length
+and obfuscation types of plagiarism cases. We conduct experiments over Spanish-English and German-
+English datasets. Experimental results show that continuous representations allow the continuous word
+alignment-based similarity analysis model to obtain competitive results and the knowledge-based docu-
+ment similarity model to outperform the state-of-the-art in CL plagiarism detection.

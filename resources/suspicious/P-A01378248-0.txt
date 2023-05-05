@@ -1,0 +1,1 @@
+In problems such as automatic speech recognition and machine translation, where the system response must be a sentence in a given language, language models are employed in order to improve system performance. This paper explores the potential that fuzzy mathematics and ontologies have for improving performance in MDE.

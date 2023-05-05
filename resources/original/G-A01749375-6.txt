@@ -1,0 +1,1 @@
+In this chapter we provide an overview on some of the main issues in machine learning. We discuss machine learning both from a formal and a statistical perspective. We describe some aspects of machine learning such as concept learning, support vector machines, and graphical models in more detail. We also present example machine learning applications to the Semantic Web.
