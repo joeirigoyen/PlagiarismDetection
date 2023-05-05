@@ -90,7 +90,7 @@ class NLPModel(Model):
                 threshold = params.get("threshold") or 10.0
                 print(f"Similarity score: {max_result[1]} (using {params.get('distance') or 'cosine'} distance)")
                 print(f"File is {'not ' if max_result[1] < threshold else ''}potentially plagiarized")
-            case "remove_stopwords" | "remove_punctuation" | _:
+            case "stopwords" | "unpunctuate" | _:
                 threshold = params.get("threshold") or 0.6
                 print(f"Similarity score: {max_result[1]} (using {params.get('distance') or 'cosine'} distance)")
                 print(f"File is {'not ' if max_result[1] < threshold else ''}potentially plagiarized")
